@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>yelkhan@ylkhn.com: ~ — 404</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0a0e12">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand mono" href="/" aria-label="ylkhn.com — home">
+      <span class="brand-prompt" aria-hidden="true">&gt;_</span> ylkhn
+    </a>
+  </header>
+
+  <main id="main" class="page-404">
+    <section class="term" aria-labelledby="h-404">
+      <div class="term-bar" aria-hidden="true">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="term-title mono">yelkhan@ylkhn.com: ~</span>
+      </div>
+      <div class="term-body">
+        <h1 id="h-404" class="cmd mono"><span class="prompt" aria-hidden="true">$</span> cat <span id="req-path">/this-page</span></h1>
+        <p class="out mono err-line">bash: <span id="req-path-2">/this-page</span>: No such file or directory</p>
+        <p class="comment mono" id="hint"># error 404. nothing here — the path is wrong, or the file never existed.</p>
+        <p class="cmd mono"><span class="prompt" aria-hidden="true">$</span> <a href="/" class="home-link" id="home">cd ~</a><span class="cursor" aria-hidden="true"></span></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var path = window.location.pathname || "/";
+      if (path.length > 80) path = path.slice(0, 77) + "…";
+      document.getElementById("req-path").textContent = path;
+      document.getElementById("req-path-2").textContent = path;
+      var lang = "en";
+      try { if (localStorage.getItem("lang") === "ru") lang = "ru"; } catch (e) {}
+      if (lang === "ru") {
+        document.documentElement.lang = "ru";
+        document.getElementById("hint").textContent =
+          "# ошибка 404. здесь ничего нет — путь неверный или файл никогда не существовал.";
+      }
+    })();
+  </script>
+</body>
+</html>
