@@ -1,0 +1,62 @@
+name: contributions
+
+# Regenerates assets/contributions.svg (the GitHub contribution calendar shown
+# on the site) once a day and commits it back when it changed. The default
+# GITHUB_TOKEN is enough: the calendar is public profile data.
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # daily, 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: contributions
+  cancel-in-progress: true
+
+env:
+  GH_USER: ylkhn1
+  SVG_PATH: assets/contributions.svg
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Fetch contribution calendar (GraphQL)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api graphql -f login="$GH_USER" -f query='
+            query($login: String!) {
+              user(login: $login) {
+                contributionsCollection {
+                  contributionCalendar {
+                    totalContributions
+                    weeks {
+                      contributionDays { date weekday contributionCount contributionLevel }
+                    }
+                  }
+                }
+              }
+            }' > "$RUNNER_TEMP/calendar.json"
+          jq -e '.data.user.contributionsCollection.contributionCalendar.weeks | length > 0' "$RUNNER_TEMP/calendar.json" > /dev/null
+
+      - name: Render SVG
+        run: python3 tools/contributions.py "$RUNNER_TEMP/calendar.json" -o "$SVG_PATH"
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- "$SVG_PATH"; then
+            echo "no changes"
+            exit 0
+          fi
+          total=$(sed -n 's/.*data-total="\([0-9]*\)".*/\1/p' "$SVG_PATH" | head -n1)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "$SVG_PATH"
+          git commit -m "chore: update contribution graph (${total} contributions)"
+          git push
