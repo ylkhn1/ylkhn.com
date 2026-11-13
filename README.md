@@ -25,9 +25,10 @@ Target: **Cloudflare Pages**, root domain `ylkhn.com`.
 index.html                 single page, semantic HTML, OpenGraph meta
 404.html                   custom not-found page (Cloudflare Pages serves it automatically)
 assets/css/style.css       design tokens, terminal-window styling, reduced-motion rules
-assets/js/main.js          EN/RU strings, language toggle (localStorage), typing animation
+assets/js/main.js          EN/RU strings, language auto-detect + toggle (localStorage), typing animation
 assets/js/terminal.js      easter egg: fake bash in a <dialog> (` key or footer button)
 assets/fonts/              JetBrains Mono Regular, subset to Latin + Cyrillic (woff2)
+assets/projects/           project card screenshots (720×315 webp)
 assets/contributions.svg   GitHub contribution calendar, regenerated daily by the workflow
 tools/contributions.py     renders that SVG from GitHub GraphQL data (stdlib only)
 .github/workflows/         contributions.yml: daily cron, commits the SVG back if it changed
@@ -39,11 +40,13 @@ _headers                   Cloudflare Pages headers
 
 ## Easter egg
 
-Press `` ` `` anywhere on the page, or click "launch terminal" in the footer, to open a fake shell. Commands: `help`, `whoami`, `neofetch`, `skills`, `contact`, `clear`, `exit`, and `sudo hire-me`. Esc closes it; the native `<dialog>` handles the focus trap.
+Press `` ` `` anywhere on the page, or click "launch terminal" in the footer, to open a fake shell. Commands: `help`, `whoami`, `neofetch`, `projects`, `skills`, `contact`, `clear`, `exit`, and `sudo hire-me`. Esc closes it; the native `<dialog>` handles the focus trap.
 
 ## Editing content
 
 All user-facing text lives in the `STRINGS` object at the top of `assets/js/main.js`, keyed by language. Elements pick their string through a `data-i18n="key"` attribute in `index.html`. The default (no-JS) text in the HTML is English.
+
+Projects are the cards in the `#projects` section of `index.html` (name, link, stack chips); their descriptions are the `p1`…`p3` strings. To add one, copy a card, add a `pN` string in both languages, and add a row to `PROJECTS` in `assets/js/terminal.js` so the `projects` shell command lists it too.
 
 ## Regenerating assets
 

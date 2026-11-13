@@ -12,9 +12,11 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand mono" href="/" aria-label="ylkhn.com — home">
-      <span class="brand-prompt" aria-hidden="true">&gt;_</span> ylkhn
-    </a>
+    <div class="site-header-in">
+      <a class="brand mono" href="/" aria-label="ylkhn.com — home">
+        <span class="brand-prompt" aria-hidden="true">&gt;_</span> ylkhn
+      </a>
+    </div>
   </header>
 
   <main id="main" class="page-404">
@@ -38,8 +40,18 @@
       if (path.length > 80) path = path.slice(0, 77) + "…";
       document.getElementById("req-path").textContent = path;
       document.getElementById("req-path-2").textContent = path;
-      var lang = "en";
-      try { if (localStorage.getItem("lang") === "ru") lang = "ru"; } catch (e) {}
+      var lang = null;
+      try { lang = localStorage.getItem("lang"); } catch (e) {}
+      if (lang !== "ru" && lang !== "en") {
+        // same rule as main.js: first Russian/Kazakh or English entry wins
+        var list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+        lang = "en";
+        for (var i = 0; i < list.length; i++) {
+          var code = String(list[i]).toLowerCase().slice(0, 2);
+          if (code === "ru" || code === "kk") { lang = "ru"; break; }
+          if (code === "en") break;
+        }
+      }
       if (lang === "ru") {
         document.documentElement.lang = "ru";
         document.getElementById("hint").textContent =

@@ -25,11 +25,15 @@
       systems: "Systems",
       linuxNote: "# server administration, infrastructure, deep OS knowledge",
       linuxUptime: "# uptime: 5+ years",
-      backendLc: "backend",
-      frontendLc: "frontend",
-      backendYears: "4 years",
-      frontendYears: "3 years",
-      historyNote: "# years in production, counted honestly",
+      navProjects: "projects",
+      navSkills: "skills",
+      navContact: "contact",
+      ctaProjects: "ls projects/",
+      ctaContact: "message on telegram",
+      projectsNote: "# live in production",
+      p1: "Website for a kids’ football academy in Almaty, in Russian and Kazakh.",
+      p2: "Corporate site of an international marketing and PR company. A multilingual single-page app on React.",
+      p3: "Site for a firm that registers pesticides, fertilizers and feed additives in Kazakhstan. Three languages: ru, en, zh.",
       contribCaption: "# GitHub contributions in the last year",
       contribCaptionN: "# {n} contributions in the last year",
       less: "less",
@@ -52,14 +56,15 @@
           "  help        this list",
           "  whoami      who runs this place",
           "  neofetch    system summary",
+          "  projects    what I shipped",
           "  skills      cat skills.txt",
           "  contact     how to reach me",
           "  clear       clear the screen",
           "  exit        close the terminal",
           "  sudo        try it"
         ],
-        skills: ["backend:   go, python", "frontend:  react, vite", "systems:   linux   # uptime: 5+ years"],
-        contact: ["telegram   https://t.me/ylkhn", "github     https://github.com/ylkhn1"],
+        skills: ["backend:   go, python", "frontend:  react, next.js, vite", "systems:   linux   # uptime: 5+ years"],
+        contact: ["telegram   https://t.me/ylkhn", "github     https://github.com/ylkhn1", "email      yelkhan.amangeldy@gmail.com"],
         sudoHire: [
           "[sudo] password for visitor: ••••••••",
           "Access granted. Provisioning yelkhan for your team…",
@@ -91,11 +96,15 @@
       systems: "Системы",
       linuxNote: "# администрирование серверов, инфраструктура, глубокое знание ОС",
       linuxUptime: "# uptime: 5+ лет",
-      backendLc: "бэкенд",
-      frontendLc: "фронтенд",
-      backendYears: "4 года",
-      frontendYears: "3 года",
-      historyNote: "# лет в продакшене, без приписок",
+      navProjects: "проекты",
+      navSkills: "навыки",
+      navContact: "контакты",
+      ctaProjects: "ls projects/",
+      ctaContact: "написать в telegram",
+      projectsNote: "# работают в продакшене",
+      p1: "Сайт детской футбольной академии в Алматы на русском и казахском языках.",
+      p2: "Корпоративный сайт международной маркетинговой и PR-компании. Многоязычное одностраничное приложение на React.",
+      p3: "Сайт компании, которая регистрирует пестициды, удобрения и кормовые добавки в Казахстане. Три языка: ru, en, zh.",
       contribCaption: "# контрибуции на GitHub за последний год",
       contribCaptionN: "# {n} контрибуций за последний год",
       less: "меньше",
@@ -121,14 +130,15 @@
           "  help        этот список",
           "  whoami      кто здесь хозяин",
           "  neofetch    сводка о системе",
+          "  projects    что я запустил",
           "  skills      cat skills.txt",
           "  contact     как со мной связаться",
           "  clear       очистить экран",
           "  exit        закрыть терминал",
           "  sudo        попробуйте"
         ],
-        skills: ["бэкенд:    go, python", "фронтенд:  react, vite", "системы:   linux   # uptime: 5+ лет"],
-        contact: ["telegram   https://t.me/ylkhn", "github     https://github.com/ylkhn1"],
+        skills: ["бэкенд:    go, python", "фронтенд:  react, next.js, vite", "системы:   linux   # uptime: 5+ лет"],
+        contact: ["telegram   https://t.me/ylkhn", "github     https://github.com/ylkhn1", "email      yelkhan.amangeldy@gmail.com"],
         sudoHire: [
           "[sudo] пароль для visitor: ••••••••",
           "Доступ разрешён. Подключаю yelkhan к вашей команде…",
@@ -163,8 +173,8 @@
       if (token !== typeToken || i >= text.length) return;
       typedEl.textContent = text.slice(0, ++i);
       var ch = text.charAt(i - 1);
-      var delay = 28 + Math.random() * 40;
-      if (ch === "." || ch === ",") delay += 260;
+      var delay = 14 + Math.random() * 22;
+      if (ch === "." || ch === ",") delay += 160;
       window.setTimeout(step, delay);
     }
 
@@ -275,6 +285,18 @@
     }
   }
 
+  // First visit: follow the browser's language list. Russian or Kazakh first
+  // means the Russian version; anything else stays English.
+  function detect() {
+    var list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+    for (var i = 0; i < list.length; i++) {
+      var code = String(list[i]).toLowerCase().slice(0, 2);
+      if (code === "ru" || code === "kk") return "ru";
+      if (code === "en") return "en";
+    }
+    return "en";
+  }
+
   function store(lang) {
     try {
       window.localStorage.setItem(STORAGE_KEY, lang);
@@ -319,7 +341,7 @@
   }
 
   /* ---------- init ---------- */
-  var initial = readStored() || "en";
+  var initial = readStored() || detect();
   applyLang(initial, true);
 
   var langBtn = document.getElementById("lang-btn");

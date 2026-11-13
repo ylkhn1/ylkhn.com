@@ -35,7 +35,13 @@
   function neofetch(t) {
     var lines = ["yelkhan@ylkhn.com", "-----------------"];
     for (var i = 0; i < t.neofetch.length; i++) lines.push(pad(t.neofetch[i][0]) + t.neofetch[i][1]);
-    lines.push(pad("Telegram") + "https://t.me/ylkhn", pad("GitHub") + "https://github.com/ylkhn1");
+    lines.push(pad("Telegram") + "https://t.me/ylkhn", pad("GitHub") + "https://github.com/ylkhn1", pad("Email") + "yelkhan.amangeldy@gmail.com");
+    return lines;
+  }
+  var PROJECTS = [["FC Tiger", "https://tigerkids.kz", "p1"], ["Liberty Space", "https://libertyspaceint.com", "p2"], ["MAG Consulting", "https://toomag.kz", "p3"]];
+  function projects(t) {
+    var lines = [];
+    for (var i = 0; i < PROJECTS.length; i++) lines.push(PROJECTS[i][0] + "  " + PROJECTS[i][1], "  " + t[PROJECTS[i][2]]);
     return lines;
   }
   function pad(s) { return (s + ":           ").slice(0, 12); }
@@ -44,6 +50,7 @@
     help: function (t) { print(t.tty.help); },
     whoami: function (t) { print(t.whoami); },
     neofetch: function (t) { print(neofetch(t)); },
+    projects: function (t) { print(projects(t)); },
     skills: function (t) { print(t.tty.skills); },
     contact: function (t) { print(t.tty.contact); },
     clear: function () { out.textContent = ""; },
